@@ -14,7 +14,6 @@ upload_daily_results,
 
 def main():
 
-```
 config_sheet_id = os.environ["CONFIG_SHEET_ID"]
 results_sheet_id = os.environ["RESULTS_SHEET_ID"]
 service_json = os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"]
