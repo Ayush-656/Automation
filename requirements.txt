@@ -5,4 +5,5 @@ google-auth
 google-auth-oauthlib
 google-auth-httplib2
 openpyxl
-crawler
+crawler>=2.0.0
+
