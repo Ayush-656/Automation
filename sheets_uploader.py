@@ -57,7 +57,7 @@ def load_config_from_sheet(service_json, spreadsheet_id):
             if value == "[LINES]":
                 section = "lines"
                 continue
-            if row and len(row) > 1:
+            if row and len(row) > 1 and row[1].strip():
                 k = row[0].strip().lower()
                 v = row[1].strip()
                 if k == "network":
