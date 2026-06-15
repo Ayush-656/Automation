@@ -1,0 +1,30 @@
+{
+"web": {
+"enabled": true,
+"network": "xapads.com",
+"relation": "DIRECT",
+"domains": [
+"2001online.com",
+"247sports.com",
+"al-ain.com"
+],
+"seller_ids": [
+"223500",
+"224742",
+"227586"
+],
+"lines": [
+"aps.amazon.com, 822c7bc2-d58f-4911-b8a2-95ee49e044c8, RESELLER",
+"google.com, pub-6968738577620513, RESELLER, f08c47fec0942fa0",
+"conversantmedia.com, 100718, RESELLER, 03113cd04947736d"
+]
+},
+
+"inapp": {
+"enabled": false
+},
+
+"ctv": {
+"enabled": false
+}
+}
