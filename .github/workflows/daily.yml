@@ -16,16 +16,19 @@ jobs:
           pip install -r requirements.txt
       - name: DEBUG - check tvazteca fetch
         run: |
+          curl -s https://api.ipify.org && echo " <- GitHub Actions outbound IP"
           python3 -c "
-          from crawler import fetch_file
-          result = fetch_file('tvazteca.com', 'app-ads.txt', timeout=10)
-          print('ok:', result['ok'])
-          print('url used:', result['url'])
-          print('error:', result['error'])
-          print('text length:', len(result['text']))
-          print('first 300 chars:', result['text'][:300])
-          print('last 300 chars:', result['text'][-300:])
-          print('contains sabio:', 'sabio' in result['text'].lower())
+          import requests
+          headers = {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+              'Accept': 'text/plain,text/html;q=0.9,*/*;q=0.8',
+          }
+          r = requests.get('https://tvazteca.com/app-ads.txt', headers=headers, timeout=10)
+          print('status:', r.status_code)
+          for k, v in r.headers.items():
+              print(f'  {k}: {v}')
+          print('contains sabio:', 'sabio' in r.text.lower())
+          print('total chars:', len(r.text))
           "
       - name: Run crawler
         env:
