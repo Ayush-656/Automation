@@ -14,6 +14,19 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+      - name: DEBUG - check tvazteca fetch
+        run: |
+          python3 -c "
+          from crawler import fetch_file
+          result = fetch_file('tvazteca.com', 'app-ads.txt', timeout=10)
+          print('ok:', result['ok'])
+          print('url used:', result['url'])
+          print('error:', result['error'])
+          print('text length:', len(result['text']))
+          print('first 300 chars:', result['text'][:300])
+          print('last 300 chars:', result['text'][-300:])
+          print('contains sabio:', 'sabio' in result['text'].lower())
+          "
       - name: Run crawler
         env:
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
