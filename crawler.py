@@ -15,7 +15,10 @@ from typing import Dict, List, Optional
 def normalize_domain(raw: str) -> str:
     raw = raw.strip()
     raw = re.sub(r"^https?://", "", raw, flags=re.IGNORECASE)
-    return raw.split("/")[0].split("?")[0].split("#")[0].lower().strip()
+    domain = raw.split("/")[0].split("?")[0].split("#")[0].lower().strip()
+    if domain.startswith("www."):
+        domain = domain[4:]
+    return domain
 
 
 def parse_ads_line(raw: str) -> Optional[Dict]:
@@ -26,8 +29,11 @@ def parse_ads_line(raw: str) -> Optional[Dict]:
     parts = [p.strip() for p in raw.split(",")]
     if len(parts) < 3:
         return None
+    domain = parts[0].lower()
+    if domain.startswith("www."):
+        domain = domain[4:]
     return {
-        "domain":    parts[0].lower(),
+        "domain":    domain,
         "seller_id": parts[1],
         "relation":  parts[2].upper(),
         "tag":       parts[3].lower() if len(parts) > 3 else "",
@@ -95,8 +101,14 @@ def parse_seller_ids(text_or_list) -> List[str]:
 
 def fetch_file(domain: str, file_type: str, timeout: int) -> Dict:
     headers = {
-        "User-Agent": "AdsTxtCrawler/7.0",
-        "Accept":     "text/plain, text/*, */*",
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+        ),
+        "Accept": "text/plain,text/html;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
     }
     last_error   = "Connection failed"
     max_attempts = 2
